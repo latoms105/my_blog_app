@@ -110,3 +110,4 @@ class _BlogEntryScreenState extends State<BlogEntryScreen> {
       ),
     );
   }
+}
