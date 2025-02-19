@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 class Blog {
-  String id;
-  String title;
-  String date;
-  String content;
-  String? imagePath;
+  final String id;
+  final String title;
+  final String date;
+  final String content;
+  final String? imagePath;
 
   Blog({
     required this.id,

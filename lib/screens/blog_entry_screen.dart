@@ -7,7 +7,6 @@ import '../services/blog_service.dart';
 
 class BlogEntryScreen extends StatefulWidget {
   final Blog? blog;
-
   BlogEntryScreen({this.blog});
 
   @override
@@ -33,8 +32,8 @@ class _BlogEntryScreenState extends State<BlogEntryScreen> {
     }
   }
 
-  Future<void> _pickImage() async {
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await ImagePicker().pickImage(source: source);
     if (pickedFile != null) {
       setState(() {
         _imagePath = pickedFile.path;
@@ -83,27 +82,32 @@ class _BlogEntryScreenState extends State<BlogEntryScreen> {
               decoration: InputDecoration(labelText: 'Title'),
             ),
             SizedBox(height: 10),
-            Text('Date: ${DateTime.now().toString().split(' ')[0]}'),
-            SizedBox(height: 10),
             TextField(
               controller: _contentController,
               decoration: InputDecoration(labelText: 'Content'),
               maxLines: 5,
             ),
             SizedBox(height: 10),
-            _imagePath != null
-                ? Image.file(File(_imagePath!), height: 150)
-                : Container(),
-            SizedBox(height: 10),
-            ElevatedButton.icon(
-              onPressed: _pickImage,
-              icon: Icon(Icons.image),
-              label: Text('Pick Image'),
+            _imagePath != null ? Image.file(File(_imagePath!), height: 150) : Container(),
+            Row(
+              children: [
+                ElevatedButton.icon(
+                  onPressed: () => _pickImage(ImageSource.gallery),
+                  icon: Icon(Icons.image),
+                  label: Text('Gallery'),
+                ),
+                SizedBox(width: 10),
+                ElevatedButton.icon(
+                  onPressed: () => _pickImage(ImageSource.camera),
+                  icon: Icon(Icons.camera),
+                  label: Text('Camera'),
+                ),
+              ],
             ),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: _saveBlog,
-              child: Text(_isEditing ? 'Update Blog' : 'Save Blog'),
+              child: Text('Save Blog'),
             ),
           ],
         ),
