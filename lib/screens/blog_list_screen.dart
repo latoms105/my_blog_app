@@ -1,19 +1,25 @@
 import 'dart:io';
+// 'dart:io' is used for file operations in displaying blog images.
 import 'package:flutter/material.dart';
 import '../models/blog.dart';
+// Imports the Blog model to display the list of blogs.
 import '../services/blog_service.dart';
+// Imports BlogService to fetch and manage stored blogs.
 import 'blog_entry_screen.dart';
+// Imports BlogEntryScreen to navigate to the blog creation and editing screen.
 
 class BlogListScreen extends StatefulWidget {
+  const BlogListScreen({super.key});
+
   @override
-  _BlogListScreenState createState() => _BlogListScreenState();
+  State<BlogListScreen> createState() => _BlogListScreenState();
 }
 
 class _BlogListScreenState extends State<BlogListScreen> {
   final BlogService _blogService = BlogService();
   List<Blog> _blogs = [];
   List<Blog> _filteredBlogs = [];
-  Set<String> _selectedBlogs = {};
+  final List<Blog> _selectedBlogs = [];
   final TextEditingController _searchController = TextEditingController();
 
   @override
@@ -42,13 +48,8 @@ class _BlogListScreenState extends State<BlogListScreen> {
     });
   }
 
-  void _deleteBlog(String blogId) async {
-    await _blogService.deleteBlog(blogId);
-    _loadBlogs();
-  }
-
   void _deleteSelectedBlogs() async {
-    await _blogService.deleteMultipleBlogs(_selectedBlogs.toList());
+    await _blogService.deleteMultipleBlogs(_selectedBlogs.map((blog) => blog.id).toList());
     setState(() {
       _selectedBlogs.clear();
     });
@@ -71,10 +72,10 @@ class _BlogListScreenState extends State<BlogListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Blog'),
+        title: const Text('My Blog'),
         actions: [
           IconButton(
-            icon: Icon(Icons.delete),
+            icon: const Icon(Icons.delete),
             onPressed: _selectedBlogs.isNotEmpty ? _deleteSelectedBlogs : null,
           ),
         ],
@@ -82,10 +83,10 @@ class _BlogListScreenState extends State<BlogListScreen> {
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             child: TextField(
               controller: _searchController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Search Blogs...',
                 prefixIcon: Icon(Icons.search),
                 border: OutlineInputBorder(),
@@ -97,14 +98,14 @@ class _BlogListScreenState extends State<BlogListScreen> {
               itemCount: _filteredBlogs.length,
               itemBuilder: (context, index) {
                 Blog blog = _filteredBlogs[index];
-                bool isSelected = _selectedBlogs.contains(blog.id);
+                bool isSelected = _selectedBlogs.contains(blog);
 
                 return ListTile(
                   title: Text(blog.title),
                   subtitle: Text(blog.date),
                   leading: blog.imagePath != null
                       ? Image.file(File(blog.imagePath!), width: 50)
-                      : Icon(Icons.article),
+                      : const Icon(Icons.article),
                   trailing: IconButton(
                     icon: Icon(
                       Icons.delete,
@@ -113,9 +114,9 @@ class _BlogListScreenState extends State<BlogListScreen> {
                     onPressed: () {
                       setState(() {
                         if (isSelected) {
-                          _selectedBlogs.remove(blog.id);
+                          _selectedBlogs.remove(blog);
                         } else {
-                          _selectedBlogs.add(blog.id);
+                          _selectedBlogs.add(blog);
                         }
                       });
                     },
@@ -126,9 +127,9 @@ class _BlogListScreenState extends State<BlogListScreen> {
                   onLongPress: () {
                     setState(() {
                       if (isSelected) {
-                        _selectedBlogs.remove(blog.id);
+                        _selectedBlogs.remove(blog);
                       } else {
-                        _selectedBlogs.add(blog.id);
+                        _selectedBlogs.add(blog);
                       }
                     });
                   },
@@ -140,7 +141,7 @@ class _BlogListScreenState extends State<BlogListScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _navigateToEntryScreen(),
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }

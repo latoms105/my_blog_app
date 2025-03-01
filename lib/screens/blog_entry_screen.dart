@@ -1,17 +1,20 @@
 import 'dart:io';
+// 'dart:io' is used to handle file operations such as saving and displaying images.
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 import '../models/blog.dart';
+// Imports the Blog model to manage blog data.
 import '../services/blog_service.dart';
+// Imports BlogService to handle data storage and retrieval.
 
 class BlogEntryScreen extends StatefulWidget {
   final Blog? blog;
-  const BlogEntryScreen({Key? key, this.blog}) : super(key: key);
+  const BlogEntryScreen({super.key, this.blog});
 
   @override
-  _BlogEntryScreenState createState() => _BlogEntryScreenState();
+  State<BlogEntryScreen> createState() => _BlogEntryScreenState();
 }
 
 class _BlogEntryScreenState extends State<BlogEntryScreen> {
