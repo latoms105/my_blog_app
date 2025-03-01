@@ -15,23 +15,19 @@ class Blog {
     this.imagePath,
   });
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'title': title,
-      'date': date,
-      'content': content,
-      'imagePath': imagePath,
-    };
-  }
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'title': title,
+    'date': date,
+    'content': content,
+    'imagePath': imagePath,
+  };
 
-  static Blog fromJson(Map<String, dynamic> json) {
-    return Blog(
-      id: json['id'],
-      title: json['title'],
-      date: json['date'],
-      content: json['content'],
-      imagePath: json['imagePath'],
-    );
-  }
+  static Blog fromJson(Map<String, dynamic> json) => Blog(
+    id: json['id'],
+    title: json['title'],
+    date: json['date'],
+    content: json['content'],
+    imagePath: json['imagePath'],
+  );
 }
